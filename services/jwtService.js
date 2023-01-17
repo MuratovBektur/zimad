@@ -13,7 +13,6 @@ const sign = (body, key, options) => {
 const verify = (token, key) => {
   return new Promise((resolve, reject) => {
     jwt.verify(token, key, (err, result) => {
-      console.log("err", err);
       if (err) reject(err);
       resolve(result);
     });
@@ -37,7 +36,7 @@ class JWTService {
   }
   async verifyAccessToken(token) {
     try {
-      if (!REFRESH_SECRET) throw "REFRESH_SECRET not found";
+      if (!REFRESH_SECRET) throw "ACCESS_SECRET not found";
       const body = await verify(token, ACCESS_SECRET);
       return body;
     } catch (err) {
@@ -47,7 +46,7 @@ class JWTService {
   }
   async generateRefreshToken(body) {
     try {
-      if (!ACCESS_SECRET) throw "ACCESS_SECRET not found";
+      if (!ACCESS_SECRET) throw "REFRESH_SECRET not found";
       const token = await sign(body, REFRESH_SECRET, {
         expiresIn: "7d",
       });

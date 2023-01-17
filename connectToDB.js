@@ -8,6 +8,7 @@ export default async function () {
     database: DB_NAME,
     username: DB_USER,
     password: DB_PASSWORD,
+    logging: false,
   });
   try {
     await sequelize.authenticate();

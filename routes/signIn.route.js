@@ -1,31 +1,26 @@
 import express from "express";
 import { body, oneOf } from "express-validator";
 
-import signinController from "../controllers/signin.controller.js";
+import signinController from "../controllers/signIn.controller.js";
 
 const signinRoute = express.Router();
 
 signinRoute.post(
   "/",
   [
-    oneOf(
-      [
-        body("id", "id can't be empty").custom((id) => {
-          const isNumber = !!Number(id);
-          if (isNumber) return Promise.resolve;
-        }),
-        body("id", "id must be valid email").isEmail(),
-      ],
-      "id must be number or valid email"
-    ),
+    oneOf([
+      body("id", "id must be valid phone number").isMobilePhone(),
+      body("id", "id must be valid email").isEmail(),
+    ]),
     body("password", "password must be string and contain at least 5 char")
       .isString()
       .isLength({
         min: 5,
       }),
   ],
-  signinController.getToken
+  signinController.getAccessTokenByPassword
 );
+
 signinRoute.post(
   "/new_token",
   [
@@ -38,7 +33,7 @@ signinRoute.post(
         min: 10,
       }),
   ],
-  signinController.updateAccessToken
+  signinController.getAccessTokenByRefreshToken
 );
 
 export default signinRoute;

@@ -1,11 +1,13 @@
 import express from "express";
 
-import signinRouter from "./signin.route.js";
-import signupRouter from "./signup.route.js";
+import signinRouter from "./signIn.route.js";
+import signupRouter from "./signUp.route.js";
+import userInfo from "./userInfo.route.js";
 
 const apiRouter = express.Router();
 
 apiRouter.use("/signin", signinRouter);
 apiRouter.use("/signup", signupRouter);
+apiRouter.use("/info", userInfo);
 
 export default apiRouter;

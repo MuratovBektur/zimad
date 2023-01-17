@@ -5,7 +5,7 @@ import { hashPassword } from "../services/passwordService.js";
 
 const User = db.User;
 
-class SignupController {
+class SignUpController {
   async register(req, res) {
     try {
       // validate fields
@@ -22,7 +22,7 @@ class SignupController {
         },
       });
       if (isUserIdBusy) {
-        return res.status(400).send("id is already in use");
+        return res.status(403).send("id is already in use");
       }
       const userFields = {
         id,
@@ -32,8 +32,8 @@ class SignupController {
       await User.create(userFields);
 
       const [accessToken, refreshToken] = await Promise.all([
-        jwtService.generateAccessToken(userFields),
-        jwtService.generateRefreshToken(userFields),
+        jwtService.generateAccessToken({ id }),
+        jwtService.generateRefreshToken({ id }),
       ]);
       return res.status(201).json({ accessToken, refreshToken });
     } catch (e) {
@@ -43,4 +43,4 @@ class SignupController {
   }
 }
 
-export default new SignupController();
+export default new SignUpController();
