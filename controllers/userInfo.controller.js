@@ -1,7 +1,7 @@
 class UserInfoController {
   async getUserInfo(req, res) {
     const id = req.user.id;
-    return res.status(400).json({ id });
+    return res.status(200).json({ id });
   }
 }
 

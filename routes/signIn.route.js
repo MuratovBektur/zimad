@@ -25,8 +25,8 @@ signinRoute.post(
   "/new_token",
   [
     body(
-      "refresh_token",
-      "refresh_token must be string and contain at least 10 char"
+      "refreshToken",
+      "refreshToken must be string and contain at least 10 char"
     )
       .isString()
       .isLength({

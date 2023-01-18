@@ -3,8 +3,8 @@ import express from "express";
 import userInfoController from "../controllers/userInfo.controller.js";
 import isAuthorized from "../services/isAuthorized.js";
 
-const signinRoute = express.Router();
+const userInfoRoute = express.Router();
 
-signinRoute.get("/", isAuthorized, userInfoController.getUserInfo);
+userInfoRoute.get("/", isAuthorized, userInfoController.getUserInfo);
 
-export default signinRoute;
+export default userInfoRoute;

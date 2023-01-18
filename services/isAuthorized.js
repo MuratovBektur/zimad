@@ -1,6 +1,6 @@
 import db from "../models/index.js";
 import jwtService from "./jwtService.js";
-const User = db.User;
+const { User, RevokedToken } = db;
 
 export default async function isAuthorized(req, res, next) {
   const token = req.headers.authorization;
@@ -8,15 +8,24 @@ export default async function isAuthorized(req, res, next) {
     return res.status(403).json({ error: "Token can't be empty" });
   }
   try {
-    const { id } = await jwtService.verifyAccessToken(token);
+    const [tokenBody, revokedToken] = await Promise.all([
+      jwtService.verifyAccessToken(token),
+      RevokedToken.findOne({
+        token,
+      }),
+    ]);
+    if (revokedToken) throw "";
+    const id = tokenBody.id;
     const user = await User.findOne({
       where: {
         id,
       },
     });
+    if (!user) throw "";
     req.user = user;
     next();
   } catch (e) {
+    console.error(e);
     return res.status(403).send("Token is incorrect");
   }
 }

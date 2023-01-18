@@ -50,7 +50,6 @@ class JWTService {
       const token = await sign(body, REFRESH_SECRET, {
         expiresIn: "7d",
       });
-      console.log("token", token);
       return token;
     } catch (err) {
       console.error(err);

@@ -2,7 +2,7 @@ import { validationResult } from "express-validator";
 import jwtService from "../services/jwtService.js";
 import db from "../models/index.js";
 import { comparePassword } from "../services/passwordService.js";
-const User = db.User;
+const { User, RevokedToken } = db;
 
 class SignInController {
   async getAccessTokenByPassword(req, res) {
@@ -39,12 +39,28 @@ class SignInController {
         return res.status(400).json({ errors: errors.array() });
       }
 
-      const { refresh_token } = req.body;
+      const { refreshToken } = req.body;
       let id;
       try {
-        const tokenBody = await jwtService.verifyRefreshToken(refresh_token);
+        const [tokenBody, revokedToken] = await Promise.all([
+          jwtService.verifyRefreshToken(refreshToken),
+          RevokedToken.findOne({
+            token: refreshToken,
+          }),
+        ]);
+
+        if (revokedToken) throw "";
         id = tokenBody.id;
+        const user = await User.findOne({
+          where: {
+            id,
+          },
+        });
+        if (!user) {
+          throw "";
+        }
       } catch (e) {
+        console.error(e);
         return res.status(403).send("token is incorrect");
       }
       const accessToken = await jwtService.generateAccessToken({ id });
