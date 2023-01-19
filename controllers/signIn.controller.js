@@ -45,7 +45,9 @@ class SignInController {
         const [tokenBody, revokedToken] = await Promise.all([
           jwtService.verifyRefreshToken(refreshToken),
           RevokedToken.findOne({
-            token: refreshToken,
+            where: {
+              token: refreshToken,
+            },
           }),
         ]);
 

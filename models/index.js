@@ -38,7 +38,7 @@ await Promise.all(
   modelNames.map(async (file) => {
     // получаем обьекты моделей и добавляем в обьект db
     const fn = await import(path.join(__dirname, file));
-    const model = fn.default(sequelize, Sequelize.DataTypes);
+    const model = fn.default(sequelize);
     db[model.name] = model;
   })
 );

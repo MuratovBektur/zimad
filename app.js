@@ -1,6 +1,6 @@
 import express from "express";
-import "./services/applyEnvConfig.js";
 
+import "./services/applyEnvConfig.js";
 import apiRouter from "./routes/api.route.js";
 import db from "./models/index.js";
 

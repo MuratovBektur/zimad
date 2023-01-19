@@ -1,2 +1,3 @@
 node_modules
+uploads/
 configs/prod.env

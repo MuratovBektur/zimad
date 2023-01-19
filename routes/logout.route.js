@@ -1,7 +1,7 @@
 import express from "express";
 
 import logoutController from "../controllers/logout.controller.js";
-import isAuthorized from "../services/isAuthorized.js";
+import isAuthorized from "../middlewares/isAuthorized.js";
 
 const logoutRoute = express.Router();
 
